@@ -150,13 +150,16 @@ class Application(Frame):
                 output_format = input_format
                 original_name = self.get_input_title(path)
                 temp_title = "temp" + str(random.randint(1, 100))
-                temp_path = os.path.dirname(path) + temp_title + output_format
+                temp_path = os.path.dirname(path) +"/"+ temp_title +"."+ output_format
                 os.rename(path, temp_path)
+                print path
+                print(temp_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
                 os.rename(temp_path, path)
-                os.remove(path)
+                # os.remove(path)
+                file=temp_title+"."+output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
                 video0 = 'temp/720.mp4'
@@ -164,10 +167,10 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) + original_name + "a." + output_format
+                ori_path = os.path.dirname(path) +"/"+ original_name + "a." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + original_name + "b." + output_format
+                ori_path = os.path.dirname(path) +"/"+ original_name + "b." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -184,24 +187,27 @@ class Application(Frame):
                 output_format = input_format
                 original_name = self.get_input_title(path)
                 temp_title = "temp" + str(random.randint(1, 100))
-                temp_path = os.path.dirname(path) + temp_title + output_format
+                temp_path = os.path.dirname(path) +"/"+ temp_title +"."+ output_format
                 os.rename(path, temp_path)
+                print path
+                print(temp_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
                 os.rename(temp_path, path)
-                os.remove(path)
+                # os.remove(path)
+                file=temp_title+"."+output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
-                video0 = 'temp/1080.mp4'
+                video0 = 'temp/720.mp4'
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) + original_name + "a." + output_format
+                ori_path = os.path.dirname(path) +"/"+ original_name + "a." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + original_name + "b." + output_format
+                ori_path = os.path.dirname(path) +"/"+ original_name + "b." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)

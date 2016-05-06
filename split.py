@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 from Tkinter import *
+import random
 
 reload(sys)
-sys.setdefaultencoding('gbk')
+sys.setdefaultencoding('utf8')
 flag = True
 print u"你好!"
 
@@ -41,7 +42,8 @@ class Application(Frame):
                    " -vcodec copy -acodec copy -y " + "out/" + output_title + u"_上集." + output_format
         print(cmd_line)
         os.system(cmd_line)
-        return 0
+        out="out/" + output_title + u"_上集." + output_format
+        return out
 
     def split_video_b(self, input_path='split/video.mp4', start='00:45:00'):
         input_title = self.get_input_title(input_path)
@@ -51,15 +53,27 @@ class Application(Frame):
                    + "out/" + output_title + u"_下集." + output_format
         print(cmd_line)
         os.system(cmd_line)
-        return 0
+        out="out/" + output_title + u"_下集." + output_format
+        return out
 
-    def split_video(self, input_dir='split', split_time="00:45:00"):  # 仅需修改此处分割时间即可 *****************
+    def split_video(self, input_dir='split', split_time="00:25:00"):  # 仅需修改此处分割时间即可 *****************
         for parent, dirname, filename in os.walk(input_dir):
             for file in filename:
                 print file
                 path = os.path.join(parent, file)
-                self.split_video_a(path, split_time)
-                self.split_video_b(path, split_time)
+                input_format = self.get_input_format(path)
+                output_format = input_format
+                original_name = self.get_input_title(path)
+                temp_title = "temp" + str(random.randint(1, 100))
+                temp_path = os.path.dirname(path) +"/"+ temp_title +"."+ output_format
+                os.rename(path,temp_path)
+                out_path=self.split_video_a(temp_path, split_time)
+                ori_path = os.path.dirname(out_path) +"/"+ original_name + "_上." + output_format
+                os.rename(out_path, ori_path)
+                out_path=self.split_video_b(temp_path, split_time)
+                ori_path = os.path.dirname(out_path) +"/"+ original_name + "_下." + output_format
+                os.rename(out_path, ori_path)
+                os.rename(temp_path,path)
         print u"视频分割完毕，到out文件夹查看"
         return 0
 
