@@ -1,2 +1,2 @@
-# watermark
-video watermarking @ wuzongxian926
+# winmk
+winmk
