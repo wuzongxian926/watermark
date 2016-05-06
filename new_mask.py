@@ -61,7 +61,7 @@ class Application(Frame):
         return 0
 
     def split_video_for_2_1_combine(self, input_path='download/20150115.mp4', start='00:01:00'):
-        end = '00:05:00'
+        end = '00:14:00'
         input_title = self.get_input_title(input_path)
         output_title = input_title
         cmd_line = "ffmpeg -ss " + start + " -t " + end + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_2.mp4"
@@ -69,7 +69,7 @@ class Application(Frame):
         os.system(cmd_line)
         return 0
 
-    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:05:00'):
+    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:15:00'):
         input_title = self.get_input_title(input_path)
         output_title = input_title
         cmd_line = "ffmpeg -ss " + start + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_3.mp4"
