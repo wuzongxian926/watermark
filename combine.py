@@ -26,7 +26,8 @@ file_path('out')
 
 class Application(Frame):
     def get_input_title(self, path):
-        file_name = os.path.basename(path)
+        file = os.path.basename(path)
+        file_name = os.path.splitext(file)[0]
         return file_name
 
     def get_input_format(self, path):
