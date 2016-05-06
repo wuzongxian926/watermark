@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
-from Tkinter import *
 import os
+from Tkinter import *
 
 reload(sys)
 sys.setdefaultencoding('gbk')
 flag = True
 print u"你好!"
+
+
+def file_path(FILE_PATH='/home/wuxy/aaa111/22222'):
+    if os.path.isdir(FILE_PATH):  ##不用加引号，如果是多级目录，只判断最后一级目录是否存在
+        print 'dir %s exists' % (FILE_PATH)
+        pass
+    else:
+        print  'dir %s not exists' % (FILE_PATH)
+        os.mkdir(FILE_PATH)  ##只能创建单级目录，用这个命令创建级联的会报OSError错误         print 'mkdir ok
+    return 0
+file_path('combine')
+file_path('download')
+file_path('mask2')
+file_path('split')
 
 
 class Application(Frame):
@@ -117,7 +131,7 @@ class Application(Frame):
         return 0
 
     def combine_4b_video(self, video0='temp/720.mp4', video1='download/1.mp4', video2='download/2.mp4',
-                        video3='download/3.mp4'):
+                         video3='download/3.mp4'):
         input_title = self.get_input_title(video1)
         output = input_title
         cmd_line = "ffmpeg -i " + video0 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output + "_0.ts"
@@ -136,8 +150,9 @@ class Application(Frame):
         os.remove("temp/" + output + "_2.ts")
         os.remove("temp/" + output + "_3.ts")
         return 0
+
     def combine_4a_video(self, video0='temp/720.mp4', video1='download/1.mp4', video2='download/2.mp4',
-                        video3='download/3.mp4'):
+                         video3='download/3.mp4'):
         input_title = self.get_input_title(video1)
         output = input_title
         cmd_line = "ffmpeg -i " + video0 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output + "_0.ts"
@@ -156,7 +171,6 @@ class Application(Frame):
         os.remove("temp/" + output + "_2.ts")
         os.remove("temp/" + output + "_3.ts")
         return 0
-
 
     def combine_video(self, dir='combine'):
         video1 = ''
@@ -228,7 +242,7 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2.mp4"
                 video3 = "combine/" + file.split('.')[0] + "_3.mp4"
                 self.combine_4a_video(video1, video2, video0, video3)
-                self.combine_4b_video( video0,video1, video2, video3)
+                self.combine_4b_video(video0, video1, video2, video3)
                 os.remove(video1)
                 os.remove(video2)
                 os.remove(video3)
@@ -252,7 +266,7 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2.mp4"
                 video3 = "combine/" + file.split('.')[0] + "_3.mp4"
                 self.combine_4a_video(video1, video2, video0, video3)
-                self.combine_4b_video(video0,video1, video2,  video3)
+                self.combine_4b_video(video0, video1, video2, video3)
                 os.remove(video1)
                 os.remove(video2)
                 os.remove(video3)
