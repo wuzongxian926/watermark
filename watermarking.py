@@ -44,30 +44,27 @@ class Application(Frame):
         output_format = input_format
         cmd_line = "ffmpeg -ss " + start + " -t " + end + " -i " + input_path + " -vcodec copy -acodec copy -y " + "mask2/" + output_title + "." + output_format
         print(cmd_line)
-
         os.system(cmd_line)
         return 0
 
     def split_video_for_2_1_combine(self, input_path='download/20150115.mp4', start='00:01:00'):  # 第二段视频
-        end = '00:02:00'
+        end = '00:06:00'
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
         output_format = input_format
         cmd_line = "ffmpeg -ss " + start + " -t " + end + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_2." + output_format
         print(cmd_line)
-
         os.system(cmd_line)
         return 0
 
-    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:03:00'):  # 第三段视频
+    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:07:00'):  # 第三段视频
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
         output_format = input_format
         cmd_line = "ffmpeg -ss " + start + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_3." + output_format
         print(cmd_line)
-
         os.system(cmd_line)
         return 0
 
@@ -150,7 +147,7 @@ class Application(Frame):
                 output_format = input_format
                 original_name = self.get_input_title(path)
                 temp_title = "temp" + str(random.randint(1, 100))
-                temp_path = os.path.dirname(path) +"/"+ temp_title +"."+ output_format
+                temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
@@ -159,7 +156,7 @@ class Application(Frame):
                 self.split_video_for_2_2_combine(temp_path)
                 os.rename(temp_path, path)
                 # os.remove(path)
-                file=temp_title+"."+output_format
+                file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
                 video0 = 'temp/720.mp4'
@@ -167,10 +164,10 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) +"/"+ original_name + "a." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "a." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) +"/"+ original_name + "b." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "b." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -187,7 +184,7 @@ class Application(Frame):
                 output_format = input_format
                 original_name = self.get_input_title(path)
                 temp_title = "temp" + str(random.randint(1, 100))
-                temp_path = os.path.dirname(path) +"/"+ temp_title +"."+ output_format
+                temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
@@ -196,7 +193,7 @@ class Application(Frame):
                 self.split_video_for_2_2_combine(temp_path)
                 os.rename(temp_path, path)
                 # os.remove(path)
-                file=temp_title+"."+output_format
+                file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
                 video0 = 'temp/720.mp4'
@@ -204,10 +201,10 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) +"/"+ original_name + "a." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "a." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) +"/"+ original_name + "b." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "b." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
