@@ -21,6 +21,8 @@ def file_path(FILE_PATH='/home/wuxy/aaa111/22222'):
 
 file_path('combine')
 file_path('download')
+file_path('download/720')
+file_path('download/1080')
 file_path('mask2')
 file_path('split')
 
@@ -138,7 +140,7 @@ class Application(Frame):
         out = "out/" + output_title + "_a." + output_format
         return out
 
-    def batch_mask720drm(self, dir='download'):
+    def batch_mask720drm(self, dir='download/720'):
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
                 print file
@@ -164,10 +166,10 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "a." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "b." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -175,7 +177,7 @@ class Application(Frame):
         print u"水印制作完毕，前往out文件夹查看"
         return 0
 
-    def batch_mask1080whd(self, dir='download'):
+    def batch_mask1080whd(self, dir='download/1080'):
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
                 print file
@@ -201,10 +203,10 @@ class Application(Frame):
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
                 path = self.combine_4a_video(video1, video2, video0, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "a." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "b." + output_format
+                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -232,6 +234,6 @@ root = Tk()
 w = Label(root, text="watermarking")
 w.pack()
 app = Application(master=root)
-doc = Label(root, text="视频放置于download文件夹", fg="red")
+doc = Label(root, text="视频放置于【720】文件夹或者【1080】文件夹", fg="red")
 doc.pack()
 app.mainloop()
