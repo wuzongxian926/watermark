@@ -140,6 +140,13 @@ class Application(Frame):
         out = "out/" + output_title + "_a." + output_format
         return out
 
+    def generatGIF(self, PATH='VIDEO——PATH'):
+        cmd_line = "ffmpeg -ss 00:02:20 -t 10 -i " + PATH + " -r 1 -s 320*240 -f gif out/" + str(random.randint(0,1000)) + ".gif"
+        print cmd_line
+
+        os.system(cmd_line)
+        return 0
+
     def batch_mask720drm(self, dir='download/720'):
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
@@ -148,11 +155,12 @@ class Application(Frame):
                 input_format = self.get_input_format(path)
                 output_format = input_format
                 original_name = self.get_input_title(path)
-                temp_title = "temp" + str(random.randint(1, 100))
+                temp_title = "temp" + str(random.randint(1, 10000))
                 temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
+                self.generatGIF(temp_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
@@ -161,7 +169,7 @@ class Application(Frame):
                 file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
-                video0 = 'temp/720.mp4'
+                video0 = 'temp/720.mp4'  ##################################################720################
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
@@ -185,11 +193,12 @@ class Application(Frame):
                 input_format = self.get_input_format(path)
                 output_format = input_format
                 original_name = self.get_input_title(path)
-                temp_title = "temp" + str(random.randint(1, 100))
+                temp_title = "temp" + str(random.randint(1, 10000))
                 temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
+                self.generatGIF(temp_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
@@ -198,7 +207,7 @@ class Application(Frame):
                 file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
-                video0 = 'temp/720.mp4'
+                video0 = 'temp/1080.mp4'  ###################################################1080#######################
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format

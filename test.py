@@ -1,10 +1,11 @@
 import os
+from random import randint
 
-__author__ = 'zhangxulong'
-def combine_video(dir="temp"):
-    for parent, dirname, filename in os.walk(dir):
-        for file in filename:
-            print file
 
+def generatGIF(PATH='VIDEOPATH'):
+    cmd_line = "ffmpeg -ss 00:02:20 -t 10 -i " + PATH + " -r 1 -s 320*240 -f gif out/" + str(randint(0,1000)) + ".gif"
+    print cmd_line
+    print "**"
+    os.system(cmd_line)
     return 0
-combine_video('out')
+generatGIF('download/1080/test.mp4')
