@@ -203,7 +203,9 @@ class Application(Frame):
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
-                self.generatGIF(temp_path)
+                gif_path = self.generatGIF(temp_path)
+                gif_formal_path = "out/" + original_name + ".gif"
+                os.rename(gif_path, gif_formal_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
