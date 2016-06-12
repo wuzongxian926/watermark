@@ -60,7 +60,7 @@ class Application(Frame):
         os.system(cmd_line)
         return 0
 
-    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:07:00'):  # 第三段视频
+    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:08:00'):  # 第三段视频##############################广告后重叠部分控制00:08:00
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
