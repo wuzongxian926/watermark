@@ -141,7 +141,7 @@ class Application(Frame):
         return out
 
     def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:02:20开始截取15秒钟
-        start_time = "00:02:20"  # 时间为从00:02:20开始
+        start_time = "00:12:20"  # 时间为从00:02:20开始
         dur_time = "15"  # 截取15秒钟
         random_title = str(random.randint(0, 1000))
         cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
