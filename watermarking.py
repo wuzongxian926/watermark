@@ -140,14 +140,15 @@ class Application(Frame):
         out = "out/" + output_title + "_a." + output_format
         return out
 
-    def generatGIF(self, PATH='VIDEO——PATH'):#生成GIF封面图 时间为从00:02:20开始截取15秒钟
-        start_time="00:02:20"#时间为从00:02:20开始
-        dur_time="15"#截取15秒钟
-        cmd_line = "ffmpeg -ss "+start_time+" -t "+dur_time+" -i " + PATH + " -r 1 -s 480*270 -f gif out/" + str(random.randint(0,1000)) + ".gif"
+    def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:02:20开始截取15秒钟
+        start_time = "00:02:20"  # 时间为从00:02:20开始
+        dur_time = "15"  # 截取15秒钟
+        random_title = str(random.randint(0, 1000))
+        cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
         print cmd_line
-
         os.system(cmd_line)
-        return 0
+        gif_path = "out/" + random_title + ".gif"
+        return gif_path
 
     def batch_mask720drm(self, dir='download/720'):
         for parent, dirname, filename in os.walk(dir):
@@ -162,7 +163,9 @@ class Application(Frame):
                 os.rename(path, temp_path)
                 print path
                 print(temp_path)
-                self.generatGIF(temp_path)
+                gif_path = self.generatGIF(temp_path)
+                gif_formal_path = "out/" + original_name + ".gif"
+                os.rename(gif_path, gif_formal_path)
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
