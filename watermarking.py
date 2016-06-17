@@ -25,6 +25,8 @@ file_path('download/720')
 file_path('download/1080')
 file_path('mask2')
 file_path('split')
+file_path('out')
+file_path('temp')
 
 
 class Application(Frame):
