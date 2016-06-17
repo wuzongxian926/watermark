@@ -52,7 +52,7 @@ class Application(Frame):
         return 0
 
     def split_video_for_2_1_combine(self, input_path='download/20150115.mp4', start='00:01:00'):  # 第二段视频
-        end = '00:06:00'
+        end = '00:16:00'
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
@@ -62,7 +62,7 @@ class Application(Frame):
         os.system(cmd_line)
         return 0
 
-    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:08:00'):  # 第三段视频##############################广告后重叠部分控制00:08:00
+    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:18:00'):  # 第三段视频##############################广告后重叠部分控制00:08:00
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
@@ -201,8 +201,8 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                # path = self.combine_4a_video(video1, video2, video0, video3)#含片头
-                path = self.combine_3a_video(video1, video2, video3)#不含广告
+                path = self.combine_4a_video(video1, video2, video0, video3)#含片头
+                # path = self.combine_3a_video(video1, video2, video3)#不含广告
                 ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
@@ -242,8 +242,8 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                # path = self.combine_4a_video(video1, video2, video0, video3)#含片头
-                path = self.combine_3a_video(video1, video2, video3)  # 不含广告
+                path = self.combine_4a_video(video1, video2, video0, video3)#含片头
+                # path = self.combine_3a_video(video1, video2, video3)  # 不含广告
                 ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
