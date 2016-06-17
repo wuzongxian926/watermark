@@ -33,9 +33,9 @@ class Application(Frame):
         print format
         return format
 
-    def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:22:20开始截取12秒钟
-        start_time = "00:22:20"  # 时间为从00:02:20开始
-        dur_time = "12"  # 截取12秒钟
+    def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
+        start_time = "00:01:08"  # 时间为从00:01:08开始
+        dur_time = "9"  # 截取2秒钟
         random_title=str(random.randint(0, 1000))
         cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
         print cmd_line
@@ -61,6 +61,40 @@ class Application(Frame):
                     os.rename(temp_path, path)
                     gif_formal_path="out/"+original_name+".gif"
                     os.rename(gif_path,gif_formal_path)
+        for parent, dirname, filename in os.walk('download/1080'):
+            for file in filename:
+                print file
+                path = os.path.join(parent, file)
+                input_format = self.get_input_format(path)
+                if input_format == "mp4":
+                    output_format = input_format
+                    original_name = self.get_input_title(path)
+                    temp_title = "temp" + str(random.randint(1, 10000))
+                    temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
+                    os.rename(path, temp_path)
+                    print path
+                    print(temp_path)
+                    gif_path = self.generatGIF(temp_path)
+                    os.rename(temp_path, path)
+                    gif_formal_path = "out/" + original_name + ".gif"
+                    os.rename(gif_path, gif_formal_path)
+        for parent, dirname, filename in os.walk('download/720'):
+            for file in filename:
+                print file
+                path = os.path.join(parent, file)
+                input_format = self.get_input_format(path)
+                if input_format == "mp4":
+                    output_format = input_format
+                    original_name = self.get_input_title(path)
+                    temp_title = "temp" + str(random.randint(1, 10000))
+                    temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
+                    os.rename(path, temp_path)
+                    print path
+                    print(temp_path)
+                    gif_path = self.generatGIF(temp_path)
+                    os.rename(temp_path, path)
+                    gif_formal_path = "out/" + original_name + ".gif"
+                    os.rename(gif_path, gif_formal_path)
         print u"GIF封面图生成完毕，前往out文件夹查看"
         return 0
 
