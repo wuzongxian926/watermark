@@ -165,9 +165,9 @@ class Application(Frame):
 
     def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:02:20开始截取3秒钟
         start_time = "00:02:20"  # 时间为从00:02:20开始
-        dur_time = "9"  # 截取9秒钟
+        dur_time = "3"  # 截取3秒钟
         random_title = str(random.randint(0, 1000))
-        cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
+        cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 960*540 -f gif out/" + random_title + ".gif"
         print cmd_line
         os.system(cmd_line)
         gif_path = "out/" + random_title + ".gif"
