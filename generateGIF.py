@@ -34,7 +34,7 @@ class Application(Frame):
         return format
 
     def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
-        start_time = "00:01:56"  # 时间为从00:01:08开始
+        start_time = "00:00:40"  # 时间为从00:01:08开始
         dur_time = "3"  # 截取2秒钟
         random_title=str(random.randint(0, 1000))
         cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 960*540 -f gif out/" + random_title + ".gif"
