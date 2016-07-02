@@ -42,47 +42,6 @@ class Application(Frame):
         format = os.path.basename(path).split('.')[-1]
         return format
 
-    def combine_video(self, dir="combine"):
-        global original_name, path
-        video1 = ''
-        video2 = ''
-        for parent, dirname, filename in os.walk(dir):
-            for file in filename:
-                print file
-                path = os.path.join(parent, file)
-                input_format = self.get_input_format(path)
-                output_format = input_format
-                original_name = self.get_input_title(path)
-                temp_title = "temp" + str(random.randint(1, 100))
-                temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
-                os.rename(path, temp_path)
-                if video1 == '':
-                    video1 = temp_path
-                else:
-                    video2 = temp_path
-        input_title1 = self.get_input_title(video1)
-        input_title2 = self.get_input_title(video2)
-        input_format = self.get_input_format(video1)
-        output = input_title1 + input_title2
-        output_format = input_format
-        cmd_line = "ffmpeg -i " + video1 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output + "_1.ts"
-        os.system(cmd_line)
-        os.remove(video1)
-        cmd_line = "ffmpeg -i " + video2 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output + "_2.ts"
-        os.system(cmd_line)
-        os.remove(video2)
-        cmd_line = "ffmpeg -i \"concat:temp/" + output + "_1.ts|temp/" + output + "_2.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/" + output + "." + output_format
-        print(cmd_line)
-        os.system(cmd_line)
-        os.remove("temp/" + output + "_1.ts")
-        os.remove("temp/" + output + "_2.ts")
-        output_path = "out/" + output + "." + output_format
-        ori_path = os.path.dirname(output_path) + "/" + original_name + "合并." + output_format
-        os.rename(output_path, ori_path)
-
-        print(u'合并完毕前往out查看')
-        return 0
-
     def combine_all_video(self, dir="combine"):
         global original_name, path, output_format
         video = []
@@ -155,7 +114,8 @@ class Application(Frame):
         os.system(cmd_line)
         return 0
 
-    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4', start='00:18:00'):  # 第三段视频##############################广告后重叠部分控制00:08:00
+    def split_video_for_2_2_combine(self, input_path='download/20150115.mp4',
+                                    start='00:18:00'):  # 第三段视频##############################广告后重叠部分控制00:08:00
         input_title = self.get_input_title(input_path)
         output_title = input_title
         input_format = self.get_input_format(input_path)
@@ -205,38 +165,9 @@ class Application(Frame):
         out = "out/" + output_title + "_b." + output_format
         return out
 
-    def combine_4a_video(self, video0='temp/720.mp4', video1='download/1.mp4', video2='download/2.mp4',
+    def combine_4a_video(self, video1='download/1.mp4', video2='download/2.mp4',
                          video3='download/3.mp4'):
 
-        input_title = self.get_input_title(video1)
-        output_title = input_title.split("_")[0]
-        input_format = self.get_input_format(video1)
-        output_format = input_format
-        cmd_line = "ffmpeg -i " + video0 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_0.ts"
-
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video1 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_1.ts"
-
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video2 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_2.ts"
-
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video3 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_3.ts"
-
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i \"concat:temp/" + output_title + "_0.ts|temp/" + output_title + "_1.ts|temp/" + output_title + "_2.ts|temp/" + output_title + "_3.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/" + output_title + "_a." + output_format
-        print(cmd_line)
-
-        os.system(cmd_line)
-        os.remove("temp/" + output_title + "_0.ts")
-        os.remove("temp/" + output_title + "_1.ts")
-        os.remove("temp/" + output_title + "_2.ts")
-        os.remove("temp/" + output_title + "_3.ts")
-        out = "out/" + output_title + "_a." + output_format
-        return out
-
-    def combine_3a_video(self,  video1='download/1.mp4', video2='download/2.mp4',
-                             video3='download/3.mp4'):
         input_title = self.get_input_title(video1)
         output_title = input_title.split("_")[0]
         input_format = self.get_input_format(video1)
@@ -249,7 +180,9 @@ class Application(Frame):
         os.system(cmd_line)
         cmd_line = "ffmpeg -i \"concat:temp/" + output_title + "_1.ts|temp/" + output_title + "_2.ts|temp/" + output_title + "_3.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/" + output_title + "_a." + output_format
         print(cmd_line)
+
         os.system(cmd_line)
+
         os.remove("temp/" + output_title + "_1.ts")
         os.remove("temp/" + output_title + "_2.ts")
         os.remove("temp/" + output_title + "_3.ts")
@@ -294,12 +227,12 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                path = self.combine_4a_video(video1, video2, video0, video3)#含片头
+                path = self.combine_4a_video(video1, video2, video3)  # 含片头
                 # path = self.combine_3a_video(video1, video2, video3)#不含广告
                 ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format#含片头
+                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -335,12 +268,12 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                path = self.combine_4a_video(video1, video2, video0, video3)#含片头
+                path = self.combine_4a_video(video1, video2, video3)  # 含片头
                 # path = self.combine_3a_video(video1, video2, video3)  # 不含广告
                 ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
                 os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format#含片头
+                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -474,6 +407,18 @@ class Application(Frame):
         return 0
 
     def createWidgets(self):
+        self.doc_lable_gif1 = Label(self, text="单独生成GIF封面", fg="red")
+        self.doc_lable_gif1.pack()
+        self.gif = Button(self)
+        self.gif["text"] = "生成gif",
+        self.gif["command"] = self.batch_generatGIF
+        self.gif.pack()
+
+        self.doc_lable_gif2 = Label(self, text="视频放置于out文件夹", fg="red")
+        self.doc_lable_gif2.pack()
+        self.doc_lable_seg3 = Label(self, text="======================", fg="green")
+        self.doc_lable_seg3.pack()
+
         self.doc = Label(self, text="视频放置于【720】文件夹", fg="red")
         self.doc.pack()
         self.ssy720 = Button(self)
@@ -490,7 +435,7 @@ class Application(Frame):
         self.doc_lable_seg = Label(self, text="======================", fg="green")
         self.doc_lable_seg.pack()
 
-        self.doc_lable_combine=Label(self,text="注意：按a、b、c、d、e、f排序",fg="red")
+        self.doc_lable_combine = Label(self, text="注意：按a、b、c、d、e、f排序", fg="red")
         self.doc_lable_combine.pack()
 
         self.ssycom = Button(self)
@@ -503,19 +448,6 @@ class Application(Frame):
         self.doc_lable_seg2 = Label(self, text="======================", fg="green")
         self.doc_lable_seg2.pack()
 
-        self.doc_lable_gif1 = Label(self, text="单独生成GIF封面", fg="red")
-        self.doc_lable_gif1.pack()
-        self.gif = Button(self)
-        self.gif["text"] = "生成gif",
-        self.gif["command"] = self.batch_generatGIF
-        self.gif.pack()
-
-        self.doc_lable_gif2 = Label(self, text="视频放置于out文件夹", fg="red")
-        self.doc_lable_gif2.pack()
-        self.doc_lable_seg3 = Label(self, text="======================", fg="green")
-        self.doc_lable_seg3.pack()
-
-
 
 
     def __init__(self, master=None):
@@ -526,7 +458,7 @@ class Application(Frame):
         self.doc_lable_split = Label(self, text="视频分割", fg="red")
         self.doc_lable_split.pack()
 
-        self.lable_infoN = Label(self, text="输入等分割段数N进行分割",fg="red")
+        self.lable_infoN = Label(self, text="输入等分割段数N进行分割", fg="red")
         self.lable_infoN.pack()
         self.entrythingy = Entry(self)
         self.entrythingy.pack()
@@ -541,7 +473,7 @@ class Application(Frame):
         self.doc_lable_seg4 = Label(self, text="--------------------------------------------------------", fg="green")
         self.doc_lable_seg4.pack()
         ##################################################################
-        self.lable_info = Label(self, text="输入起始时间如00:06:08",fg="red")
+        self.lable_info = Label(self, text="输入起始时间如00:06:08", fg="red")
         self.lable_info.pack()
         self.entrystart = Entry(self)
         self.entrystart.pack()
@@ -549,7 +481,7 @@ class Application(Frame):
         self.contentsstart.set("00:06:08")
         self.entrystart.config(textvariable=self.contentsstart)
 
-        self.lable_info2 = Label(self, text="输入持续时间00:10:00",fg="red")
+        self.lable_info2 = Label(self, text="输入持续时间00:10:00", fg="red")
         self.lable_info2.pack()
         self.entryend = Entry(self)
         self.entryend.pack()
@@ -565,12 +497,9 @@ class Application(Frame):
         self.doc_lable_seg5.pack()
 
 
-
-
-
-
 root = Tk()
-w = Label(root, text="all-in-one",font="strong",fg="yellow")
+root.title("视频简易处理")
+w = Label(root, text="all-in-one", font="strong", fg="yellow")
 w.pack()
 doc_lable_seg = Label(text="======================", fg="green")
 doc_lable_seg.pack()
