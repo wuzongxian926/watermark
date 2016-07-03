@@ -218,7 +218,8 @@ class Application(Frame):
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
-                os.rename(temp_path, path)
+                out_path="out/ACFUN" + original_name + "." + output_format
+                os.rename(temp_path, out_path)
                 # os.remove(path)
                 file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
@@ -227,10 +228,10 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                path = self.combine_4a_video(video1, video2, video3)  # 含片头
-                # path = self.combine_3a_video(video1, video2, video3)#不含广告
-                ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
-                os.rename(path, ori_path)
+                # path = self.combine_4a_video(video1, video2, video3)  # 含片头
+                # # path = self.combine_3a_video(video1, video2, video3)#不含广告
+                # ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
+                # os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
                 ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
                 os.rename(path, ori_path)
@@ -259,7 +260,8 @@ class Application(Frame):
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
-                os.rename(temp_path, path)
+                out_path = "out/ACFUN" + original_name + "." + output_format
+                os.rename(temp_path, out_path)
                 # os.remove(path)
                 file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
@@ -268,10 +270,10 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                path = self.combine_4a_video(video1, video2, video3)  # 含片头
-                # path = self.combine_3a_video(video1, video2, video3)  # 不含广告
-                ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
-                os.rename(path, ori_path)
+                # path = self.combine_4a_video(video1, video2, video3)  # 含片头
+                # # path = self.combine_3a_video(video1, video2, video3)  # 不含广告
+                # ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
+                # os.rename(path, ori_path)
                 path = self.combine_4b_video(video0, video1, video2, video3)
                 ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
                 os.rename(path, ori_path)
