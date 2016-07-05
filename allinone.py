@@ -189,16 +189,6 @@ class Application(Frame):
         out = "out/" + output_title + "_a." + output_format
         return out
 
-    def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:02:20开始截取3秒钟
-        start_time = "00:02:20"  # 时间为从00:02:20开始
-        dur_time = "3"  # 截取3秒钟
-        random_title = str(random.randint(0, 1000))
-        cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 960*540 -f gif out/" + random_title + ".gif"
-        print cmd_line
-        os.system(cmd_line)
-        gif_path = "out/" + random_title + ".gif"
-        return gif_path
-
     def batch_mask720drm(self, dir='download/720'):
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
@@ -218,7 +208,7 @@ class Application(Frame):
                 self.split_video_for_1_mask(temp_path)
                 self.split_video_for_2_1_combine(temp_path)
                 self.split_video_for_2_2_combine(temp_path)
-                out_path="out/ACFUN" + original_name + "." + output_format
+                out_path = "out/ACFUN" + original_name + "." + output_format
                 os.rename(temp_path, out_path)
                 # os.remove(path)
                 file = temp_title + "." + output_format
@@ -283,17 +273,20 @@ class Application(Frame):
         print u"水印制作完毕，前往out文件夹查看"
         return 0
 
-    def generatGIF(self, PATH='VIDEO——PATH'):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
-        start_time = "00:00:40"  # 时间为从00:01:08开始
-        dur_time = "3"  # 截取2秒钟
+    def generatGIF(self, PATH='VIDEO——PATH',start_time="00:02:00"):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
+        # start_time = "00:00:40"  # 时间为从00:01:08开始
+        dur_time = "8"  # 截取2秒钟
         random_title = str(random.randint(0, 1000))
-        cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 960*540 -f gif out/" + random_title + ".gif"
+        watermark_path="temp/watermark.png"
+        cmd_line="ffmpeg -ss "+start_time+" -t "+dur_time+" -i "+PATH+" -r 1 -s 480*270 -vf \"movie="+watermark_path+" [watermark]; [in][watermark] overlay=x=10:y=H-h-10 [out]\" -f gif out/"+random_title+".gif"
+        # cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
         print cmd_line
         os.system(cmd_line)
         gif_path = "out/" + random_title + ".gif"
         return gif_path
 
     def batch_generatGIF(self, dir='out'):
+        start_time=self.gifcontents.get()
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
                 print file
@@ -307,7 +300,7 @@ class Application(Frame):
                     os.rename(path, temp_path)
                     print path
                     print(temp_path)
-                    gif_path = self.generatGIF(temp_path)
+                    gif_path = self.generatGIF(temp_path,start_time)
                     os.rename(temp_path, path)
                     gif_formal_path = "out/" + original_name + ".gif"
                     os.rename(gif_path, gif_formal_path)
@@ -409,17 +402,6 @@ class Application(Frame):
         return 0
 
     def createWidgets(self):
-        self.doc_lable_gif1 = Label(self, text="单独生成GIF封面", fg="red")
-        self.doc_lable_gif1.pack()
-        self.gif = Button(self)
-        self.gif["text"] = "生成gif",
-        self.gif["command"] = self.batch_generatGIF
-        self.gif.pack()
-
-        self.doc_lable_gif2 = Label(self, text="视频放置于out文件夹", fg="red")
-        self.doc_lable_gif2.pack()
-        self.doc_lable_seg3 = Label(self, text="======================", fg="green")
-        self.doc_lable_seg3.pack()
 
         self.doc = Label(self, text="视频放置于【720】文件夹", fg="red")
         self.doc.pack()
@@ -450,11 +432,28 @@ class Application(Frame):
         self.doc_lable_seg2 = Label(self, text="======================", fg="green")
         self.doc_lable_seg2.pack()
 
-
-
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
+        self.doc_lable_gif1 = Label(self, text="单独生成GIF封面", fg="red")
+        self.doc_lable_gif1.pack()
+
+        self.giflable_infoN = Label(self, text="输入开始生成时间点", fg="red")
+        self.giflable_infoN.pack()
+        self.gifentrythingy = Entry(self)
+        self.gifentrythingy.pack()
+        self.gifbutton = Button(self, text="开始生成GIF",
+                                command=self.batch_generatGIF)
+        self.gifbutton.pack()
+        self.gifcontents = StringVar()
+        self.gifcontents.set("00:06:08")
+        self.gifentrythingy.config(textvariable=self.gifcontents)
+
+        self.doc_lable_gif2 = Label(self, text="视频放置于out文件夹", fg="red")
+        self.doc_lable_gif2.pack()
+        self.doc_lable_seg3 = Label(self, text="======================", fg="green")
+        self.doc_lable_seg3.pack()
+
         self.createWidgets()
 
         self.doc_lable_split = Label(self, text="视频分割", fg="red")
