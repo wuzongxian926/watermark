@@ -277,7 +277,7 @@ class Application(Frame):
         # start_time = "00:00:40"  # 时间为从00:01:08开始
         dur_time = "8"  # 截取2秒钟
         random_title = str(random.randint(0, 1000))
-        watermark_path="temp/watermark.png"
+        watermark_path="temp/acfun.png"
         cmd_line="ffmpeg -ss "+start_time+" -t "+dur_time+" -i "+PATH+" -r 1 -s 480*270 -vf \"movie="+watermark_path+" [watermark]; [in][watermark] overlay=x=10:y=H-h-10 [out]\" -f gif out/"+random_title+".gif"
         # cmd_line = "ffmpeg -ss " + start_time + " -t " + dur_time + " -i " + PATH + " -r 1 -s 480*270 -f gif out/" + random_title + ".gif"
         print cmd_line
