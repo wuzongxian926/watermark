@@ -165,29 +165,7 @@ class Application(Frame):
         out = "out/" + output_title + "_b." + output_format
         return out
 
-    def combine_4a_video(self, video1='download/1.mp4', video2='download/2.mp4',
-                         video3='download/3.mp4'):
 
-        input_title = self.get_input_title(video1)
-        output_title = input_title.split("_")[0]
-        input_format = self.get_input_format(video1)
-        output_format = input_format
-        cmd_line = "ffmpeg -i " + video1 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_1.ts"
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video2 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_2.ts"
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video3 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_3.ts"
-        os.system(cmd_line)
-        cmd_line = "ffmpeg -i \"concat:temp/" + output_title + "_1.ts|temp/" + output_title + "_2.ts|temp/" + output_title + "_3.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/" + output_title + "_a." + output_format
-        print(cmd_line)
-
-        os.system(cmd_line)
-
-        os.remove("temp/" + output_title + "_1.ts")
-        os.remove("temp/" + output_title + "_2.ts")
-        os.remove("temp/" + output_title + "_3.ts")
-        out = "out/" + output_title + "_a." + output_format
-        return out
 
     def batch_mask720drm(self, dir='download/720'):
         for parent, dirname, filename in os.walk(dir):
@@ -210,7 +188,7 @@ class Application(Frame):
                 self.split_video_for_2_2_combine(temp_path)
                 out_path = "out/ACFUN" + original_name + "." + output_format
                 os.rename(temp_path, out_path)
-                # os.remove(path)
+
                 file = temp_title + "." + output_format
                 self.just_2_mask('mask2/' + file)
                 os.remove('mask2/' + file)
@@ -218,12 +196,9 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                # path = self.combine_4a_video(video1, video2, video3)  # 含片头
-                # # path = self.combine_3a_video(video1, video2, video3)#不含广告
-                # ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
-                # os.rename(path, ori_path)
+
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
+                ori_path = os.path.dirname(path) + "/BAIDU" + original_name + "." + output_format  # 含片头
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
@@ -260,12 +235,9 @@ class Application(Frame):
                 video1 = "combine/" + file.split('.')[0] + "_1." + output_format
                 video2 = "combine/" + file.split('.')[0] + "_2." + output_format
                 video3 = "combine/" + file.split('.')[0] + "_3." + output_format
-                # path = self.combine_4a_video(video1, video2, video3)  # 含片头
-                # # path = self.combine_3a_video(video1, video2, video3)  # 不含广告
-                # ori_path = os.path.dirname(path) + "/" + original_name + "acfun." + output_format
-                # os.rename(path, ori_path)
+
                 path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/" + original_name + "baidu." + output_format  # 含片头
+                ori_path = os.path.dirname(path) + "/BAIDU" + original_name + "." + output_format  # 含片头
                 os.rename(path, ori_path)
                 os.remove(video1)
                 os.remove(video2)
