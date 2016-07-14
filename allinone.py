@@ -17,16 +17,12 @@ def file_path(FILE_PATH='/home/wuxy/aaa111/22222'):
         pass
     else:
         print  'dir %s not exists' % (FILE_PATH)
-        os.mkdir(FILE_PATH)
+        os.makedirs(FILE_PATH)
     return 0
 
 
 file_path('combine')
-file_path('download')
-file_path('download/720')
-file_path('download/1080')
-file_path('download/nodelete')
-file_path('mask2')
+file_path('out/nodelete')
 file_path('split')
 file_path('out')
 file_path('temp')
@@ -54,12 +50,15 @@ class Application(Frame):
                 print path
                 input_format = self.get_input_format(path)
                 output_format = input_format
-                original_name = self.get_input_title(path)
-                video_path.append(path)
+                if input_format == "mp4" or input_format =='MP4':
+                    original_name = self.get_input_title(path)
+                    video_path.append(path)
+                else:
+                    print "not mp4 file"
         video_path = sorted(video_path)
         print video_path
         for video_path_item in video_path:
-            temp_title = "temp" + str(random.randint(1, 100))
+            temp_title = "temp" + str(random.randint(1, 100000))
             temp_path = os.path.dirname(video_path_item) + "/" + temp_title + "." + output_format
             os.rename(video_path_item, temp_path)
             video.append(temp_path)
@@ -98,7 +97,7 @@ class Application(Frame):
         print output_title
         input_format = self.get_input_format(input_path)
         output_format = input_format
-        cmd_line = "ffmpeg -ss " + start + " -t " + end + " -i " + input_path + " -vcodec copy -acodec copy -y " + "mask2/" + output_title + "." + output_format
+        cmd_line = "ffmpeg -ss " + start + " -t " + end + " -i " + input_path + " -vcodec copy -acodec copy -y " + "temp/" + output_title + "." + output_format
         print(cmd_line)
         os.system(cmd_line)
         return 0
@@ -109,7 +108,7 @@ class Application(Frame):
         output_title = input_title
         input_format = self.get_input_format(input_path)
         output_format = input_format
-        cmd_line = "ffmpeg -ss " + start + " -t " + end + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_2." + output_format
+        cmd_line = "ffmpeg -ss " + start + " -t " + end + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "temp/combine_" + output_title + "_2." + output_format
         print(cmd_line)
         os.system(cmd_line)
         return 0
@@ -120,54 +119,64 @@ class Application(Frame):
         output_title = input_title
         input_format = self.get_input_format(input_path)
         output_format = input_format
-        cmd_line = "ffmpeg -ss " + start + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "combine/" + output_title + "_3." + output_format
+        cmd_line = "ffmpeg -ss " + start + "  -i " + input_path + " -vcodec copy -acodec copy -y " + "temp/combine_" + output_title + "_3." + output_format
         print(cmd_line)
         os.system(cmd_line)
         return 0
 
-    def just_2_mask(self, video_path='mask2/1.mp4'):  # 对第一段40秒视频加水印
+    def just_2_mask(self, video_path='temp/mask_1.mp4'):  # 对第一段40秒视频加水印
         input_title = self.get_input_title(video_path)
         output_title = input_title
         input_format = self.get_input_format(video_path)
         output_format = input_format
-        cmd_line = "ffmpeg -y -t 40 -i " + video_path + " -i temp/watermark.png -i temp/daleloogn.png -filter_complex \"overlay=x=if(lt(mod(t\,20)\,10)\,W-w-10\,NAN ):y=H-h-10,overlay=x=if(gt(mod(t\,20)\,10)\,W-w-10\,NAN ) :y=H-h-10\" -strict -2 combine/" + output_title + "_1." + output_format
+        cmd_line = "ffmpeg -y -t 40 -i " + video_path + " -i temp/watermark.png -i temp/daleloogn.png -filter_complex \"overlay=x=if(lt(mod(t\,20)\,10)\,W-w-10\,NAN ):y=H-h-10,overlay=x=if(gt(mod(t\,20)\,10)\,W-w-10\,NAN ) :y=H-h-10\" -strict -2 temp/combine_" + output_title + "_1." + output_format
         print(cmd_line)
 
         os.system(cmd_line)
         return 0
 
-    def combine_4b_video(self, video0='temp/720.mp4', video1='download/1.mp4', video2='download/2.mp4',
-                         video3='download/3.mp4'):
+    def combine_4b_video(self, video0='temp/720.mp4', video1='temp/combine_1.mp4', video2='temp/combine_2.mp4',
+                         video3='temp/combine_3.mp4'):
         input_title = self.get_input_title(video1)
         output_title = input_title.split("_")[0]
         input_format = self.get_input_format(video1)
         output_format = input_format
-        cmd_line = "ffmpeg -i " + video0 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_0.ts"
+        cmd_line = "ffmpeg -i " + video0 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/ts" + output_title + "_0.ts"
 
         os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video1 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_1.ts"
+        cmd_line = "ffmpeg -i " + video1 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/ts" + output_title + "_1.ts"
 
         os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video2 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_2.ts"
+        cmd_line = "ffmpeg -i " + video2 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/ts" + output_title + "_2.ts"
 
         os.system(cmd_line)
-        cmd_line = "ffmpeg -i " + video3 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/" + output_title + "_3.ts"
+        cmd_line = "ffmpeg -i " + video3 + " -vcodec copy -acodec copy -vbsf h264_mp4toannexb temp/ts" + output_title + "_3.ts"
 
         os.system(cmd_line)
-        cmd_line = "ffmpeg -i \"concat:temp/" + output_title + "_0.ts|temp/" + output_title + "_1.ts|temp/" + output_title + "_2.ts|temp/" + output_title + "_3.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/" + output_title + "_b." + output_format
+        cmd_line = "ffmpeg -i \"concat:temp/ts" + output_title + "_0.ts|temp/ts" + output_title + "_1.ts|temp/ts" + output_title + "_2.ts|temp/ts" + output_title + "_3.ts\"  -vcodec copy -acodec copy -absf aac_adtstoasc out/out" + output_title + "_b." + output_format
         print(cmd_line)
 
         os.system(cmd_line)
-        os.remove("temp/" + output_title + "_0.ts")
-        os.remove("temp/" + output_title + "_1.ts")
-        os.remove("temp/" + output_title + "_2.ts")
-        os.remove("temp/" + output_title + "_3.ts")
-        out = "out/" + output_title + "_b." + output_format
+        os.remove("temp/ts" + output_title + "_0.ts")
+        os.remove("temp/ts" + output_title + "_1.ts")
+        os.remove("temp/ts" + output_title + "_2.ts")
+        os.remove("temp/ts" + output_title + "_3.ts")
+        out = "out/out" + output_title + "_b." + output_format
         return out
 
+    def detect_720_or_1080(self,video_path):
+        cmd_line = "ffmpeg -i "+video_path+" 2>&1 | perl -lane 'print $1 if /([0-9]{2,}x[0-9]+)/'"
+        print cmd_line
+
+        print os.popen(cmd_line).readlines()
+        size = os.popen(cmd_line).readlines()[0]
 
 
-    def batch_mask720drm(self, dir='download/720'):
+        return size
+
+    def batch_mask(self, dir='out'):
+
+
         for parent, dirname, filename in os.walk(dir):
             for file in filename:
                 print file
@@ -175,75 +184,50 @@ class Application(Frame):
                 input_format = self.get_input_format(path)
                 output_format = input_format
                 original_name = self.get_input_title(path)
-                temp_title = "temp" + str(random.randint(1, 10000))
-                temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
-                os.rename(path, temp_path)
-                print path
-                print(temp_path)
-                gif_path = self.generatGIF(temp_path)
-                gif_formal_path = "out/" + original_name + ".gif"
-                os.rename(gif_path, gif_formal_path)
-                self.split_video_for_1_mask(temp_path)
-                self.split_video_for_2_1_combine(temp_path)
-                self.split_video_for_2_2_combine(temp_path)
-                out_path = "out/ACFUN" + original_name + "." + output_format
-                os.rename(temp_path, out_path)
+                if (input_format == 'mp4' or input_format == 'MP4') and not ("nodelete" in path) and not ("BAIDU" in original_name) and not (
+                    "AcFun" in original_name):
+                    temp_title = "temp" + str(random.randint(1, 10000))
+                    temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
 
-                file = temp_title + "." + output_format
-                self.just_2_mask('mask2/' + file)
-                os.remove('mask2/' + file)
-                video0 = 'temp/720.mp4'  ##################################################720################
-                video1 = "combine/" + file.split('.')[0] + "_1." + output_format
-                video2 = "combine/" + file.split('.')[0] + "_2." + output_format
-                video3 = "combine/" + file.split('.')[0] + "_3." + output_format
+                    os.rename(path, temp_path)
+                    print path
+                    print(temp_path)
+                    size = self.detect_720_or_1080(temp_path)
+                    gif_path = self.generatGIF(temp_path)
+                    gif_formal_path = "out/GIF" + original_name + ".gif"
+                    os.rename(gif_path, gif_formal_path)
+                    self.split_video_for_1_mask(temp_path)
+                    self.split_video_for_2_1_combine(temp_path)
+                    self.split_video_for_2_2_combine(temp_path)
+                    out_path = "out/AcFun" + original_name + "." + output_format
+                    os.rename(temp_path, out_path)
 
-                path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/BAIDU" + original_name + "." + output_format  # 含片头
-                os.rename(path, ori_path)
-                os.remove(video1)
-                os.remove(video2)
-                os.remove(video3)
-        print u"水印制作完毕，前往out文件夹查看"
+                    file = temp_title + "." + output_format
+                    self.just_2_mask('temp/' + file)
+                    os.remove('temp/' + file)
+                    if '1080' in size:
+                        video0='temp/1080.mp4'
+                    else:
+                        video0 = 'temp/720.mp4'
+
+                    video1 = "temp/combine_" + file.split('.')[0] + "_1." + output_format
+                    video2 = "temp/combine_" + file.split('.')[0] + "_2." + output_format
+                    video3 = "temp/combine_" + file.split('.')[0] + "_3." + output_format
+
+                    path = self.combine_4b_video(video0, video1, video2, video3)
+                    ori_path = os.path.dirname(path) + "/BAIDU" + original_name + "." + output_format  # 含片头
+                    os.rename(path, ori_path)
+                    os.remove(video1)
+                    os.remove(video2)
+                    os.remove(video3)
+                print u"水印制作完毕，前往out文件夹查看"
+            else:
+                print u"非加水印视频"
+        else:
+            print u"非加水印对象"
         return 0
 
-    def batch_mask1080whd(self, dir='download/1080'):
-        for parent, dirname, filename in os.walk(dir):
-            for file in filename:
-                print file
-                path = os.path.join(parent, file)
-                input_format = self.get_input_format(path)
-                output_format = input_format
-                original_name = self.get_input_title(path)
-                temp_title = "temp" + str(random.randint(1, 10000))
-                temp_path = os.path.dirname(path) + "/" + temp_title + "." + output_format
-                os.rename(path, temp_path)
-                print path
-                print(temp_path)
-                gif_path = self.generatGIF(temp_path)
-                gif_formal_path = "out/" + original_name + ".gif"
-                os.rename(gif_path, gif_formal_path)
-                self.split_video_for_1_mask(temp_path)
-                self.split_video_for_2_1_combine(temp_path)
-                self.split_video_for_2_2_combine(temp_path)
-                out_path = "out/ACFUN" + original_name + "." + output_format
-                os.rename(temp_path, out_path)
-                # os.remove(path)
-                file = temp_title + "." + output_format
-                self.just_2_mask('mask2/' + file)
-                os.remove('mask2/' + file)
-                video0 = 'temp/1080.mp4'  ###################################################1080#######################
-                video1 = "combine/" + file.split('.')[0] + "_1." + output_format
-                video2 = "combine/" + file.split('.')[0] + "_2." + output_format
-                video3 = "combine/" + file.split('.')[0] + "_3." + output_format
 
-                path = self.combine_4b_video(video0, video1, video2, video3)
-                ori_path = os.path.dirname(path) + "/BAIDU" + original_name + "." + output_format  # 含片头
-                os.rename(path, ori_path)
-                os.remove(video1)
-                os.remove(video2)
-                os.remove(video3)
-        print u"水印制作完毕，前往out文件夹查看"
-        return 0
 
     def generatGIF(self, PATH='VIDEO——PATH',start_time="00:02:00"):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
         # start_time = "00:00:40"  # 时间为从00:01:08开始
@@ -264,7 +248,7 @@ class Application(Frame):
                 print file
                 path = os.path.join(parent, file)
                 input_format = self.get_input_format(path)
-                if input_format == "mp4":
+                if (input_format == "mp4")and not('nodelete'in path):
                     output_format = input_format
                     original_name = self.get_input_title(path)
                     temp_title = "temp" + str(random.randint(1, 10000))
@@ -274,7 +258,7 @@ class Application(Frame):
                     print(temp_path)
                     gif_path = self.generatGIF(temp_path,start_time)
                     os.rename(temp_path, path)
-                    gif_formal_path = "out/" + original_name + ".gif"
+                    gif_formal_path = "out/GIF" + original_name + ".gif"
                     os.rename(gif_path, gif_formal_path)
 
         print u"GIF封面图生成完毕，前往out文件夹查看"
@@ -375,18 +359,13 @@ class Application(Frame):
 
     def createWidgets(self):
 
-        self.doc = Label(self, text="视频放置于【720】文件夹", fg="red")
+        self.doc = Label(self, text="视频放置于【out】文件夹", fg="red")
         self.doc.pack()
         self.ssy720 = Button(self)
-        self.ssy720["text"] = "720加水印",
-        self.ssy720["command"] = self.batch_mask720drm
+        self.ssy720["text"] = "自动识别尺寸加水印",
+        self.ssy720["command"] = self.batch_mask
         self.ssy720.pack()
-        self.doc = Label(self, text="视频放置于【1080】文件夹", fg="red")
-        self.doc.pack()
-        self.ssy1080 = Button(self)
-        self.ssy1080["text"] = "1080加水印",
-        self.ssy1080["command"] = self.batch_mask1080whd
-        self.ssy1080.pack()
+
 
         self.doc_lable_seg = Label(self, text="======================", fg="green")
         self.doc_lable_seg.pack()
@@ -398,7 +377,7 @@ class Application(Frame):
         self.ssycom["text"] = "合并文件夹所有视频",
         self.ssycom["command"] = self.combine_all_video
         self.ssycom.pack()
-        self.doc_lable_combine2 = Label(self, text="需合并的文件放置于combine文件夹", fg="red")
+        self.doc_lable_combine2 = Label(self, text="需合并的文件放置于【combine】文件夹", fg="red")
         self.doc_lable_combine2.pack()
 
         self.doc_lable_seg2 = Label(self, text="======================", fg="green")
@@ -406,6 +385,7 @@ class Application(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
+
         self.pack()
         self.doc_lable_gif1 = Label(self, text="单独生成GIF封面", fg="red")
         self.doc_lable_gif1.pack()
@@ -421,7 +401,7 @@ class Application(Frame):
         self.gifcontents.set("00:06:08")
         self.gifentrythingy.config(textvariable=self.gifcontents)
 
-        self.doc_lable_gif2 = Label(self, text="视频放置于out文件夹", fg="red")
+        self.doc_lable_gif2 = Label(self, text="视频放置于【out】文件夹", fg="red")
         self.doc_lable_gif2.pack()
         self.doc_lable_seg3 = Label(self, text="======================", fg="green")
         self.doc_lable_seg3.pack()
@@ -464,7 +444,7 @@ class Application(Frame):
 
         self.buttonstart = Button(self, text="2.开始提取片段", command=self.extract_video)
         self.buttonstart.pack()
-        self.doc_lable_split = Label(self, text="视频放置于split文件夹 ", fg="red")
+        self.doc_lable_split = Label(self, text="视频放置于【split】文件夹 ", fg="red")
         self.doc_lable_split.pack()
         self.doc_lable_seg5 = Label(self, text="======================", fg="green")
         self.doc_lable_seg5.pack()
