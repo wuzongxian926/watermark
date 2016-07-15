@@ -229,7 +229,7 @@ class Application(Frame):
 
 
 
-    def generatGIF(self, PATH='VIDEO——PATH',start_time="00:02:00"):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
+    def generatGIF(self, PATH='VIDEO——PATH',start_time="00:08:00"):  # 生成GIF封面图 时间为从00:22:20开始截取2秒钟
         # start_time = "00:00:40"  # 时间为从00:01:08开始
         dur_time = "8"  # 截取2秒钟
         random_title = str(random.randint(0, 1000))
